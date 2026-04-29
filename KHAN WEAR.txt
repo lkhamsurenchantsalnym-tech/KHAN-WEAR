@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<title>Хувцасны Дэлгүүр</title>
+<style>
+body { font-family: Arial; margin:0; background:#fafafa; }
+header { background:#111; color:#fff; padding:15px; text-align:center; }
+.products { display:flex; flex-wrap:wrap; gap:20px; padding:20px; }
+.card { background:#fff; padding:15px; width:220px; border-radius:10px; }
+select, button { margin-top:5px; width:100%; padding:5px; }
+.cart { padding:20px; background:#fff; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>KHAN WEAR</h1>
+</header>
+
+<div class="products" id="products"></div>
+
+<div class="cart">
+<h2>🛒 Сагс</h2>
+<ul id="cart"></ul>
+<p>Нийт: <span id="total">0</span>₮</p>
+<button onclick="order()">Захиалах</button>
+</div>
+
+<script>
+const items = [
+    {id:1, name:"Цамц", price:35000},
+    {id:2, name:"Hoodie", price:55000}
+];
+
+let cart = [];
+
+function render(){
+    let html = "";
+    items.forEach(p=>{
+        html += `
+        <div class="card">
+            <h3>${p.name}</h3>
+            <p>${p.price}₮</p>
+            <select id="size-${p.id}">
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+            </select>
+            <button onclick="add(${p.id})">Сагсанд нэмэх</button>
+        </div>`;
+    });
+    document.getElementById("products").innerHTML = html;
+}
+
+function add(id){
+    const size = document.getElementById("size-"+id).value;
+    const product = items.find(p=>p.id===id);
+    cart.push({...product, size});
+    updateCart();
+}
+
+function updateCart(){
+    let total = 0;
+    let html = "";
+    cart.forEach(i=>{
+        total += i.price;
+        html += `<li>${i.name} (${i.size}) - ${i.price}₮</li>`;
+    });
+    document.getElementById("cart").innerHTML = html;
+    document.getElementById("total").innerText = total;
+}
+
+function order(){
+    alert("Захиалга илгээгдлээ! (Demo)");
+    cart = [];
+    updateCart();
+}
+
+render();
+</script>
+
+</body>
+</html>
